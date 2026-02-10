@@ -1,0 +1,61 @@
+import { requestUrl } from "obsidian";
+import type { CineVaultSearchItem, OmdbDetailedResponse } from "../types/cinevault";
+
+export async function searchOmdb(query: string, apiKey: string): Promise<CineVaultSearchItem[]> {
+  if (!apiKey) {
+    return [];
+  }
+
+  try {
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(query)}`;
+    const response = await requestUrl(url);
+    const data = response.json as {
+      Search?: Array<{ Title: string; Year: string; imdbID: string; Type: string; Poster: string }>;
+    };
+
+    if (data?.Search) {
+      return data.Search.map((item) => ({
+        imdbId: item.imdbID,
+        title: item.Title,
+        year: item.Year,
+        type: item.Type,
+        poster: item.Poster && item.Poster !== "N/A" ? item.Poster : "",
+        plot: ""
+      }));
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Error searching OMDb:", error);
+    return [];
+  }
+}
+
+export async function getOmdbDetails(imdbId: string, apiKey: string, depth: number = 0): Promise<OmdbDetailedResponse | null> {
+  // Retry limit
+  if (depth >= 3) {
+    console.error(`Failed to fetch movie details after ${depth} attempts`);
+    return null;
+  }
+
+  if (!apiKey) {
+    return null;
+  }
+
+  try {
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbId}&plot=full&tomatoes=true`;
+    const response = await requestUrl(url);
+
+    const data = response.json as OmdbDetailedResponse & { Response: string };
+
+    if (data.Response !== "True") {
+      console.error("OMDb API returned error response", data);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching movie details, retrying...", error);
+    return getOmdbDetails(imdbId, apiKey, depth + 1);
+  }
+}
