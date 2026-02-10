@@ -31,7 +31,7 @@ Settings
 </p>
 
 1. Download the latest release from the releases page
-2. Extract the files into your vault's `.obsidian/plugins/obsidian-plugin-cinevault/` directory
+2. Extract the files into your vault's `.obsidian/plugins/obsidian-cinevault/` directory
 3. Reload Obsidian
 4. Enable the plugin in Settings → Community Plugins
 

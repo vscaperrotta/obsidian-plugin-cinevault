@@ -84,7 +84,7 @@ export default class CineVaultSettingTab extends PluginSettingTab {
       .addButton(button => button
         .setButtonText("GitHub")
         .onClick(() => {
-          window.open("https://github.com/vscaperrotta/obsidian-plugin-cinevault/issues", "_blank");
+          window.open("https://github.com/vscaperrotta/obsidian-cinevault/issues", "_blank");
         }));
 
     // Support and donation
