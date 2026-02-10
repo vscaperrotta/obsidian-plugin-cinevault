@@ -62,10 +62,9 @@ The plugin includes a default demo API key for testing purposes, but it's recomm
 
 #### Library Storage Options
 
-CineVault offers two storage methods:
+CineVault stores your library data within your vault:
 
-- **Local Storage**: Data is stored in `cinevault-json/cinevault.json` within your vault
-- **External Storage**: Connect to an external JSON file outside your vault for portability
+- **Local Storage**: Data is stored in your vault like `cinevault.json`
 
 ### Usage
 
