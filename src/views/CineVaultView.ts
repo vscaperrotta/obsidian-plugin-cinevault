@@ -215,9 +215,18 @@ export default class CineVaultView extends ItemView {
       card.createEl("img", { cls: "cinevault-movie-poster" }).setAttribute("src", movie.poster);
       card.createEl("div", { text: movie.title, cls: "cinevault-movie-title" });
 
-      const type = nullSafe(() => movie.type[0].toUpperCase() + movie.type.slice(1), null);
+      // Build the details string conditionally, only including non-null/undefined values
+      const detailsParts: string[] = [];
       const year = nullSafe(() => movie.year, null);
-      card.createEl("div", { text: `${year} - ${type}` || "", cls: "cinevault-movie-year" });
+      const type = nullSafe(() => movie.type[0].toUpperCase() + movie.type.slice(1), null);
+
+      if (year) detailsParts.push(year);
+      if (type) detailsParts.push(type);
+
+      const detailsText = detailsParts.join(" - ");
+      if (detailsText) {
+        card.createEl("div", { text: detailsText, cls: "cinevault-movie-year" });
+      }
 
       card.addEventListener("click", () => this.openMovieDetails(movie));
     });
@@ -232,9 +241,18 @@ export default class CineVaultView extends ItemView {
       const info = row.createDiv({ cls: "cinevault-movie-info" });
       info.createEl("div", { text: movie.title, cls: "cinevault-movie-title" });
 
-      const type = nullSafe(() => movie.type[0].toUpperCase() + movie.type.slice(1), null);
+      // Build the details string conditionally, only including non-null/undefined values
+      const detailsParts: string[] = [];
       const year = nullSafe(() => movie.year, null);
-      info.createEl("div", { text: `${year} - ${type}` || "", cls: "cinevault-movie-year" });
+      const type = nullSafe(() => movie.type[0].toUpperCase() + movie.type.slice(1), null);
+
+      if (year) detailsParts.push(year);
+      if (type) detailsParts.push(type);
+
+      const detailsText = detailsParts.join(" - ");
+      if (detailsText) {
+        info.createEl("div", { text: detailsText, cls: "cinevault-movie-year" });
+      }
 
       row.addEventListener("click", () => this.openMovieDetails(movie));
     });
